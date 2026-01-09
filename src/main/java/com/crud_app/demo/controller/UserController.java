@@ -3,6 +3,8 @@ package com.crud_app.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,51 +32,52 @@ public class UserController{
             .orElse(null);
 }
     @GetMapping()
-    public List<User> getAllUser(){
-        return users;
+    public ResponseEntity<List<User>> getAllUsers(){
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    public Object getOenUser(@PathVariable int id){
+    public ResponseEntity<?> getOenUser(@PathVariable int id){
         User user = findUserById(id);
         if (user == null) {
-            return "User Not found";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        return user;
+        return ResponseEntity.ok(user);
 
     }
 
     @PostMapping()
-    public String addUser(@RequestBody User newUser){
+    public ResponseEntity<User> addUser(@RequestBody User newUser){
         int newId = users.size() + 1;
         newUser.setId(newId);
         users.add(newUser);
-        return "User Added " + newUser.getName() +" successfully";
- 
-        
+            return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(newUser);
+
     }
 
     @PutMapping("/{id}")
-    public String updateUser(@RequestBody User updatedUser,@PathVariable int id){
+    public ResponseEntity<?> updateUser(@RequestBody User updatedUser,@PathVariable int id){
         User user = findUserById(id);
         if (user == null) {
-            return "User Not Found";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         user.setName(updatedUser.getName());
         user.setEmail(updatedUser.getEmail());
 
-        return "User updated successfully";
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable int id){
+    public ResponseEntity<String> deleteUser(@PathVariable int id){
         User user = findUserById(id);
         if (user == null) {
-            return "User not found";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         users.remove(user);
-       return "User deleted successfully";
+       return ResponseEntity.ok("User deleted successfully");
     }
 
 }
