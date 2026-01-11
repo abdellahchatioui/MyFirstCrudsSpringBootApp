@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+
 import com.crud_app.demo.User;
+import com.crud_app.demo.exception.UserNotFoundException;
 
 @RestController()
 @RequestMapping("/api/users")
@@ -40,14 +44,14 @@ public class UserController{
     public ResponseEntity<?> getOenUser(@PathVariable int id){
         User user = findUserById(id);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            throw new UserNotFoundException("User not Found");
         }
         return ResponseEntity.ok(user);
 
     }
 
     @PostMapping()
-    public ResponseEntity<User> addUser(@RequestBody User newUser){
+    public ResponseEntity<User> addUser(@Valid @RequestBody User newUser){
         int newId = users.size() + 1;
         newUser.setId(newId);
         users.add(newUser);
@@ -61,7 +65,7 @@ public class UserController{
     public ResponseEntity<?> updateUser(@RequestBody User updatedUser,@PathVariable int id){
         User user = findUserById(id);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new UserNotFoundException("User not found");
         }
 
         user.setName(updatedUser.getName());
@@ -74,7 +78,7 @@ public class UserController{
     public ResponseEntity<String> deleteUser(@PathVariable int id){
         User user = findUserById(id);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new UserNotFoundException("User not found");
         }
         users.remove(user);
        return ResponseEntity.ok("User deleted successfully");

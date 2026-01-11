@@ -1,8 +1,18 @@
 package com.crud_app.demo;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class User {
     private int id ;
-    private String name ;
+    @NotBlank
+    @Size(min = 4)
+    private String name;
+
+    @NotBlank
+    @Size(min = 5)
+    @Email
     private String email;
 
     //Constructor
