@@ -1,13 +1,11 @@
 package com.crud_app.demo.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.crud_app.demo.User;
-import com.crud_app.demo.repository.UserRepository;
 import com.crud_app.demo.service.UserService;
 
 import jakarta.validation.Valid;
@@ -23,10 +21,23 @@ public class UserController{
         this.userService = userService;
     }
  
+    /* 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
+    */
+    @GetMapping
+    public ResponseEntity<Page<User>> getAllUsers(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction
+    ){
+        return ResponseEntity.ok(
+            userService.getAllUsers(page, size, sortBy, direction)
+        );
+    } 
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {

@@ -1,7 +1,6 @@
 package com.crud_app.demo.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import com.crud_app.demo.User;
@@ -17,8 +16,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    /* 
     public List<User> getAllUsers(){
         return userRepository.findAll();
+    }
+     */
+
+    public Page<User> getAllUsers(int page, int size, String sortBy, String direction){
+        Sort sort = direction.equalsIgnoreCase("desc")
+                    ? Sort.by(sortBy).descending()
+                    : Sort.by(sortBy).ascending();
+        
+        Pageable pageable = PageRequest.of(page,size,sort);
+
+        return userRepository.findAll(pageable);
     }
 
     public User getUserbyId(int id){
