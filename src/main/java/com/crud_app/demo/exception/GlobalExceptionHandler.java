@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler  {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handelValidationException(MethodArgumentNotValidException exception) {
-        return ResponseEntity 
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult()
+                .getFieldError()
+                .getDefaultMessage();
+
+        return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body("Validation failed");
+                .body(errorMessage);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -23,5 +27,4 @@ public class GlobalExceptionHandler  {
                 .body(exception.getMessage());
     }
 
-    
 }

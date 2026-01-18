@@ -1,87 +1,55 @@
 package com.crud_app.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import org.springframework.web.bind.annotation.*;
 
 import com.crud_app.demo.User;
-import com.crud_app.demo.exception.UserNotFoundException;
+import com.crud_app.demo.repository.UserRepository;
+import com.crud_app.demo.service.UserService;
+
+import jakarta.validation.Valid;
+
 
 @RestController()
 @RequestMapping("/api/users")
 public class UserController{
 
-    List<User> users = new ArrayList<>(List.of(
-        new User(1, "Abdellah", "Abdellah@gamil.com"),
-        new User(2, "Mohamed", "Mohamed@gmail.com")
-    ));
-
-    private User findUserById(int id) {
-    return users.stream()
-            .filter(u -> u.getId() == id)
-            .findFirst()
-            .orElse(null);
-}
-    @GetMapping()
+    private final UserService userService;
+    
+    public UserController (UserService userService) {
+        this.userService = userService;
+    }
+ 
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers(){
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOenUser(@PathVariable int id){
-        User user = findUserById(id);
-        if (user == null) {
-            throw new UserNotFoundException("User not Found");
-        }
-        return ResponseEntity.ok(user);
-
+    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.getUserbyId(id));
     }
 
-    @PostMapping()
-    public ResponseEntity<User> addUser(@Valid @RequestBody User newUser){
-        int newId = users.size() + 1;
-        newUser.setId(newId);
-        users.add(newUser);
-            return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(newUser);
-
+    @PostMapping
+    public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userService.addUser(user));
     }
+
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody User updatedUser,@PathVariable int id){
-        User user = findUserById(id);
-        if (user == null) {
-            throw new UserNotFoundException("User not found");
-        }
-
-        user.setName(updatedUser.getName());
-        user.setEmail(updatedUser.getEmail());
-
-        return ResponseEntity.ok(user);
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User updatedUser, @PathVariable Integer id) {
+        updatedUser.setId(null); 
+        return ResponseEntity.ok(userService.updateUser(updatedUser, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id){
-        User user = findUserById(id);
-        if (user == null) {
-            throw new UserNotFoundException("User not found");
-        }
-        users.remove(user);
-       return ResponseEntity.ok("User deleted successfully");
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
-
 }
