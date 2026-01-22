@@ -1,41 +1,24 @@
-package com.crud_app.demo;
+package com.crud_app.demo.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
-
-@Entity
-@Table(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class UserRequestDTO {
 
     @NotBlank(message = "Name is required")
-    @Size(min = 3 , message = "size must be great than 3")
     private String name;
 
+    @Email(message = "Invalid email")
     @NotBlank(message = "Email is required")
-    @Size(min = 4 , message = "size must be great than 4")
-    @Email
     private String email;
 
-    public User() {}
+    public UserRequestDTO() {}
 
-    public User(String name, String email) {
+    public UserRequestDTO(String name, String email) {
         this.name = name;
         this.email = email;
     }
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
