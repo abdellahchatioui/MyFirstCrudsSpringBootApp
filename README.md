@@ -22,18 +22,18 @@ This project is a **User Management REST API** that allows you to:
 ---
 
 ## ▶ How to Run the Project
-```http
+```bash
 git clone https://github.com/abdellahchatioui/MyFirstCrudsSpringBootApp.git
 ```
-```http
+```bash
 cd  MyFirstCrudsSpringBootApp
 ```
-```http
+```bash
 mvn spring-boot:run
 ```
 Then open:
-```http
-http://localhost:8080
+```bash
+http://localhost:8888
 ```
 
 ---
