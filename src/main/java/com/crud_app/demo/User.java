@@ -1,5 +1,8 @@
 package com.crud_app.demo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -18,15 +21,21 @@ public class User {
     @Size(min = 3 , message = "size must be great than 3")
     private String name;
 
+    
+    @NotBlank(message = "Password is required")
+    @Size(min = 3 , message = "size must be great than 3")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
     @NotBlank(message = "Email is required")
-    @Size(min = 4 , message = "size must be great than 4")
     @Email
     private String email;
 
     public User() {}
 
-    public User(String name, String email) {
+    public User(String name, String email, String password) {
         this.name = name;
+        this.password = password;
         this.email = email;
     }
     public Integer getId() {
@@ -43,6 +52,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
