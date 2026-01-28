@@ -1,6 +1,7 @@
 package com.crud_app.demo.service;
 
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.crud_app.demo.User;
@@ -12,10 +13,13 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
+   private final PasswordEncoder passwordEncoder;
 
+    public UserService(UserRepository userRepository,
+                    PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
     /* 
     public List<User> getAllUsers(){
         return userRepository.findAll();
@@ -44,7 +48,10 @@ public class UserService {
         }else if(userRepository.existsByName(newUser.getName())){
             throw new IllegalArgumentException("Name already exists!"); 
         }
-        
+        newUser.setPassword(
+            passwordEncoder.encode(newUser.getPassword())
+        );
+        System.out.println("User Pass : " + newUser.getPassword());
         return userRepository.save(newUser);
     }
 

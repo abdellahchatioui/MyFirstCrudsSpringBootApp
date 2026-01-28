@@ -27,6 +27,12 @@ public class UserController{
         return ResponseEntity.ok(userService.getAllUsers());
     }
     */
+   
+    @PostMapping("/auth/login")
+    public ResponseEntity<String> auth(@Valid @RequestBody User user){
+
+        return null;
+    }
     @GetMapping
     public ResponseEntity<Page<User>> getAllUsers(
         @RequestParam(defaultValue = "0") int page,
@@ -46,6 +52,7 @@ public class UserController{
 
     @PostMapping
     public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
+        System.out.println("User PassCon : " + user);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.addUser(user));
