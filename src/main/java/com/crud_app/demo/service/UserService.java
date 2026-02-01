@@ -1,13 +1,11 @@
 package com.crud_app.demo.service;
 
-import java.util.Optional;
 
 import org.springframework.data.domain.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.crud_app.demo.dto.LoginRequest;
+import com.crud_app.demo.config.JwtService;
 import com.crud_app.demo.entity.User;
 import com.crud_app.demo.exception.UserNotFoundException;
 import com.crud_app.demo.repository.UserRepository;
@@ -16,11 +14,10 @@ import com.crud_app.demo.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
-
-   private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository,
-                    PasswordEncoder passwordEncoder) {
+                    PasswordEncoder passwordEncoder,JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -29,22 +26,6 @@ public class UserService {
         return userRepository.findAll();
     }
      */
-
-
-    // User Auth
-    public User login(User request){
-        User existUser = userRepository.findByEmail(request.getEmail())
-                    .orElseThrow(() -> new UserNotFoundException("Email does not exist"));
-
-
-        // System.out.println("Password : " + passwordEncoder.encode(request.getPassword()));
-        boolean passMatch = passwordEncoder.matches(request.getPassword(), existUser.getPassword());
-        if (!passMatch) {
-             throw new UserNotFoundException("Invalid password!");  
-        }
-        return existUser;
-    }
-
     // User Cruds
     public Page<User> getAllUsers(int page, int size, String sortBy, String direction){
         Sort sort = direction.equalsIgnoreCase("desc")
@@ -71,7 +52,7 @@ public class UserService {
         newUser.setPassword(
             passwordEncoder.encode(newUser.getPassword())
         );
-        System.out.println("333 User Pass : " +passwordEncoder.encode(newUser.getPassword()));
+       
         return userRepository.save(newUser);
     }
 

@@ -32,7 +32,6 @@ public class UserController{
     
     @GetMapping("/test")
     public String test(){
-        System.out.println("test : work!!!");
         return "work !!";
     }
 
