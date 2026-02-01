@@ -1,10 +1,14 @@
 package com.crud_app.demo.service;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.crud_app.demo.User;
+import com.crud_app.demo.dto.LoginRequest;
+import com.crud_app.demo.entity.User;
 import com.crud_app.demo.exception.UserNotFoundException;
 import com.crud_app.demo.repository.UserRepository;
 
@@ -26,6 +30,22 @@ public class UserService {
     }
      */
 
+
+    // User Auth
+    public User login(User request){
+        User existUser = userRepository.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new UserNotFoundException("Email does not exist"));
+
+
+        // System.out.println("Password : " + passwordEncoder.encode(request.getPassword()));
+        boolean passMatch = passwordEncoder.matches(request.getPassword(), existUser.getPassword());
+        if (!passMatch) {
+             throw new UserNotFoundException("Invalid password!");  
+        }
+        return existUser;
+    }
+
+    // User Cruds
     public Page<User> getAllUsers(int page, int size, String sortBy, String direction){
         Sort sort = direction.equalsIgnoreCase("desc")
                     ? Sort.by(sortBy).descending()
@@ -51,7 +71,7 @@ public class UserService {
         newUser.setPassword(
             passwordEncoder.encode(newUser.getPassword())
         );
-        System.out.println("User Pass : " + newUser.getPassword());
+        System.out.println("333 User Pass : " +passwordEncoder.encode(newUser.getPassword()));
         return userRepository.save(newUser);
     }
 

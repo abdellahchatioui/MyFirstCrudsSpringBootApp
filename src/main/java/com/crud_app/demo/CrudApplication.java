@@ -9,6 +9,7 @@ public class CrudApplication {
     public static void main(String[] args) {
         SpringApplication.run(CrudApplication.class, args);
         System.out.println("http://localhost:8888/api/users");
+        System.out.println("http://localhost:8888/api/auth/login");
     }
 }
 
