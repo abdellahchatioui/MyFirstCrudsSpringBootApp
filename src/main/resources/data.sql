@@ -1,7 +1,7 @@
-
+/*
 INSERT INTO users (name, email, password) VALUES
 ('Adam Elhassan', 'adam.elhassan@gmail.com', '$2a$10$7Qm9X8xkG5p8W2pKk3ZpYOW7y3F1v6Q9XkLJZ3K5Yy6r9xB8m'),
-('Sara Benali', 'sara.benali@gmail.com', '$2a$10$7Qm9X8xkG5p8W2pKk3ZpYOW7y3F1v6Q9XkLJZ3K5Yy6r9xB8m');
+('Sara Benali', 'sara.benali@gmail.com', '$2a$10$VCFnMWGn7hWf0Ugw6HFtbOK9g.QytwtxYHfHNO0/5ZEtT/h2cz9M.');
 /*
 ('Youssef Amrani', 'youssef.amrani@gmail.com', '$2a$10$7Qm9X8xkG5p8W2pKk3ZpYOW7y3F1v6Q9XkLJZ3K5Yy6r9xB8m'),
 ('Lina Oukacha', 'lina.oukacha@gmail.com', '$2a$10$7Qm9X8xkG5p8W2pKk3ZpYOW7y3F1v6Q9XkLJZ3K5Yy6r9xB8m'),

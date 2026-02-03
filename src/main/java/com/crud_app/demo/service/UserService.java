@@ -1,10 +1,13 @@
 package com.crud_app.demo.service;
 
+
 import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.crud_app.demo.User;
+import com.crud_app.demo.config.JwtService;
+import com.crud_app.demo.dto.UserRequestDTO;
+import com.crud_app.demo.entity.User;
 import com.crud_app.demo.exception.UserNotFoundException;
 import com.crud_app.demo.repository.UserRepository;
 
@@ -12,11 +15,10 @@ import com.crud_app.demo.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
-
-   private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository,
-                    PasswordEncoder passwordEncoder) {
+                    PasswordEncoder passwordEncoder,JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -25,7 +27,7 @@ public class UserService {
         return userRepository.findAll();
     }
      */
-
+    // User Cruds
     public Page<User> getAllUsers(int page, int size, String sortBy, String direction){
         Sort sort = direction.equalsIgnoreCase("desc")
                     ? Sort.by(sortBy).descending()
@@ -42,17 +44,18 @@ public class UserService {
 
     }
 
-    public User addUser(User newUser){
-        if(userRepository.existsByEmail(newUser.getEmail())){
+    public User addUser(UserRequestDTO dto){
+        if(userRepository.existsByEmail(dto.getEmail())){
             throw new IllegalArgumentException("Email already exists!"); 
-        }else if(userRepository.existsByName(newUser.getName())){
+        }else if(userRepository.existsByName(dto.getName())){
             throw new IllegalArgumentException("Name already exists!"); 
         }
-        newUser.setPassword(
-            passwordEncoder.encode(newUser.getPassword())
-        );
-        System.out.println("User Pass : " + newUser.getPassword());
-        return userRepository.save(newUser);
+        User user  = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+       
+        return userRepository.save(user);
     }
 
     public User updateUser(User updatedUser, int id){

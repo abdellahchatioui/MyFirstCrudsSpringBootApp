@@ -1,8 +1,8 @@
 package com.crud_app.demo.mapper;
 
-import com.crud_app.demo.User;
 import com.crud_app.demo.dto.UserRequestDTO;
 import com.crud_app.demo.dto.UserResponseDTO;
+import com.crud_app.demo.entity.User;
 
 public class UserMapper {
 

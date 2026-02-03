@@ -1,4 +1,4 @@
-package com.crud_app.demo;
+package com.crud_app.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

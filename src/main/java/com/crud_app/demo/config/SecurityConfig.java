@@ -21,12 +21,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) // allow POST with JSON
+
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/**").permitAll()
+                .requestMatchers(
+                    "/api/auth/**",     // login/register endpoints
+                    "/api/users/**",    // CRUD endpoints
+                    "/h2-console/**",   // H2 database
+                    "/**"  
+                ).permitAll()
                 .anyRequest().authenticated()
-            );
+            )
+
+            // Disable default login page
+            .formLogin(form -> form.disable())
+
+            // Allow H2 console frames
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
     }

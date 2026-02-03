@@ -1,15 +1,10 @@
 package com.crud_app.demo.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class UserRequestDTO {
-
-    @NotBlank(message = "Name is required")
-    private String name;
+public class LoginRequest {
 
     @Email(message = "Invalid email")
     @NotBlank(message = "Email is required")
@@ -20,24 +15,14 @@ public class UserRequestDTO {
     @Size(min = 3 , message = "size must be great than 3")
     private String password;
     
-    public UserRequestDTO() {}
+    public LoginRequest(){};
 
-    public UserRequestDTO(String name, String email, String password) {
-        this.name = name;
-        this.password = password;
+    public LoginRequest(String email, String password){
         this.email = email;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-     public String getPassword() {
+        this.password = password;
+    };
+ 
+       public String getPassword() {
         return password;
     }
 

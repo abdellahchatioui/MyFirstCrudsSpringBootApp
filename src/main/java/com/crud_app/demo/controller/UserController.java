@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.crud_app.demo.User;
+import com.crud_app.demo.dto.LoginRequest;
+import com.crud_app.demo.dto.UserRequestDTO;
+import com.crud_app.demo.entity.User;
 import com.crud_app.demo.service.UserService;
 
 import jakarta.validation.Valid;
@@ -28,11 +30,13 @@ public class UserController{
     }
     */
    
-    @PostMapping("/auth/login")
-    public ResponseEntity<String> auth(@Valid @RequestBody User user){
-
-        return null;
+    
+    @GetMapping("/test")
+    public String test(){
+        return "work !!";
     }
+
+
     @GetMapping
     public ResponseEntity<Page<User>> getAllUsers(
         @RequestParam(defaultValue = "0") int page,
@@ -51,8 +55,8 @@ public class UserController{
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
-        System.out.println("User PassCon : " + user);
+    public ResponseEntity<User> addUser(@Valid @RequestBody UserRequestDTO user) {
+        // System.out.println("User PassCon : " + user);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.addUser(user));
