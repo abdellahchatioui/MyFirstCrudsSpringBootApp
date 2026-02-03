@@ -29,7 +29,8 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/api/auth/**",     // login/register endpoints
                     "/api/users/**",    // CRUD endpoints
-                    "/h2-console/**"    // H2 database
+                    "/h2-console/**",   // H2 database
+                    "/**"  
                 ).permitAll()
                 .anyRequest().authenticated()
             )
