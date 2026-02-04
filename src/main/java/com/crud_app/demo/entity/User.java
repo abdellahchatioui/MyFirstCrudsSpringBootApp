@@ -1,5 +1,7 @@
 package com.crud_app.demo.entity;
 
+import com.crud_app.demo.model.Role;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,12 +33,17 @@ public class User {
     @Email
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     public User() {}
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password,Role role) {
         this.name = name;
         this.password = password;
         this.email = email;
+        this.role = Role.USER;
     }
     public Integer getId() {
         return id;
@@ -68,5 +75,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

@@ -1,5 +1,7 @@
 package com.crud_app.demo.dto;
 
+import com.crud_app.demo.model.Role;
+
 public class UserResponseDTO {
 
     
@@ -7,14 +9,16 @@ public class UserResponseDTO {
     private String name;
     private String password;
     private String email;
+    private Role role;
 
 
     public UserResponseDTO() {}
 
-    public UserResponseDTO(String name, String email,String password) {
+    public UserResponseDTO(String name, String email,String password,Role role) {
         this.name = name;
         this.password = password;
         this.email = email;
+        this.role = role;
     }
 
     public Integer getId() {
@@ -47,5 +51,13 @@ public class UserResponseDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

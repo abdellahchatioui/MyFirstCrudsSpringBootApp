@@ -32,7 +32,7 @@ public class AuthService {
              throw new UserNotFoundException("Invalid password!");  
         }
         
-        return jwtService.generateToken(existUser.getEmail());
+        return jwtService.generateToken(existUser);
     }
 
 }

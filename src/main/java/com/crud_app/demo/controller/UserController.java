@@ -56,7 +56,7 @@ public class UserController{
 
     @PostMapping
     public ResponseEntity<User> addUser(@Valid @RequestBody UserRequestDTO user) {
-        // System.out.println("User PassCon : " + user);
+        System.out.println("User PassCon : " + user);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.addUser(user));
