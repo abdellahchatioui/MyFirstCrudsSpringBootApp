@@ -28,7 +28,7 @@ public class AuthController {
 
     @GetMapping("/test")
     public String test(){
-        return "work !!";
+        return "auth work !!";
     }
 
     
