@@ -35,7 +35,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/auth/**",     // login/register endpoints   
-                    "/h2-console/**"  // H2 database
+                    "/h2-console/**",   // H2 database
+                    "/actuator/mappings"  
                 ).permitAll()
                 .anyRequest().authenticated()
             )
